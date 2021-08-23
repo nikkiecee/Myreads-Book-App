@@ -2,10 +2,12 @@ import React, { Component } from "react";
 
 class Shelves extends Component {
   
-  render() {
-    const returnBooks = (items, shelf) => {
+    returnBooks = (items, shelf) => {
+        if (!items){
+      return <p>No books found</p>;
+        }
+else{
       const books = items.filter((i) => i.shelf === shelf);
-
       return (
         books &&
         books.map((book) => (
@@ -52,8 +54,11 @@ class Shelves extends Component {
           </div>
         ))
       );
+}
     };
 
+  render() {
+   
     return (
       <div className="list-books-content">
         <div>
@@ -61,7 +66,7 @@ class Shelves extends Component {
             <h2 className="bookshelf-title">Currently Reading</h2>
             <div className="bookshelf-books">
               <ol className="books-grid">
-                <li>{returnBooks(this.props.books, "currentlyReading")}</li>
+                <li>{this.returnBooks(this.props.books, "currentlyReading")}</li>
               </ol>
             </div>
           </div>
@@ -70,7 +75,7 @@ class Shelves extends Component {
             <h2 className="bookshelf-title">Want To Read</h2>
             <div className="bookshelf-books">
               <ol className="books-grid">
-                <li>{returnBooks(this.props.books, "wantToRead")}</li>
+                <li>{this.returnBooks(this.props.books, "wantToRead")}</li>
               </ol>
             </div>
           </div>
@@ -79,7 +84,7 @@ class Shelves extends Component {
             <h2 className="bookshelf-title">Read</h2>
             <div className="bookshelf-books">
               <ol className="books-grid">
-                <li>{returnBooks(this.props.books, "read")}</li>
+                <li>{this.returnBooks(this.props.books, "read")}</li>
               </ol>
             </div>
           </div>

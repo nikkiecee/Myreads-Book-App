@@ -11,34 +11,59 @@ class BooksApp extends React.Component {
   state = {
     value: "",
     books: [],
+    query: "",
+    filteredBooks:[],
   };
-  
+
   componentDidMount() {
     BooksAPI.getAll().then((books) => {
       this.setState(() => ({
-        books,                      
+        books,
       }));
     });
   }
-  
-moveBooks = (book, shelf) => {
-    BooksAPI.update(book, shelf).then(() =>
-      this.setState((currentState) => ({
-        books: currentState.books.filter((b) => {
-          if (b.id === book.id) {
-            return (book.shelf = shelf);
-          } else {
-            return book;
-          }
-        }),
-      }))
-    );
+
+  moveBooks = (book, shelf) => {
+    BooksAPI.update(book, shelf).then(() => {});
+    BooksAPI.getAll().then((books) => {
+      this.setState(() => ({
+        books,
+      }));
+    });
   };
 
+handleSearch = (searchtext) => {
+    BooksAPI.search(searchtext).then((books) =>{
+      /*
+      	- using the books currently in state:
+        
+      */
+      
+      this.setState(() => ({
+        filteredBooks: books,
+      }))
+    }
+    ).catch(err => console.log(err))
+  }
+
+  
   render() {
+    console.log(this.state.books)
     return (
       <div className="app">
-        <Route exact path="/search" component={SearchPage} />
+        <Route
+          exact
+          path="/search"
+          render={() => (
+            <SearchPage
+              books={this.state.filteredBooks}
+             // value={this.state.query}
+              moveBooks={this.moveBooks}
+              handleSearch={this.handleSearch}
+            />
+          )}
+        />
+
         <Route
           exact
           path="/"
