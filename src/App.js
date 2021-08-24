@@ -45,6 +45,7 @@ handleSearch = (searchtext) => {
     }
     ).catch(err => console.log(err))
   }
+  
 
   
   render() {
@@ -56,7 +57,8 @@ handleSearch = (searchtext) => {
           path="/search"
           render={() => (
             <SearchPage
-              books={this.state.filteredBooks}
+              books={this.state.books}
+              filteredBooks={this.state.filteredBooks}
              // value={this.state.query}
               moveBooks={this.moveBooks}
               handleSearch={this.handleSearch}
