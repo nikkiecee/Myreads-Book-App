@@ -6,6 +6,8 @@ The Myreads Book App is a virtual bookshelf used for organization of books. It h
 
 To get started developing right away:
 
+* git clone this repository https://github.com/nikkiecee/Myreads-Book-App.git
+
 * install all project dependencies with `npm install`
 
 * start the development server with `npm start`
