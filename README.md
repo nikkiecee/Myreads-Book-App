@@ -8,9 +8,15 @@ To get started developing right away:
 
 * git clone this repository https://github.com/nikkiecee/Myreads-Book-App.git
 
+<<<<<<< HEAD
 * install all project dependencies with `npm install` or `yarn install`
 
 * start the development server with `npm start` or `yarn start`
+=======
+* install all project dependencies with `npm install`
+
+* start the development server with `npm start`
+>>>>>>> b22d858cf3daa3c6655285663c0f1439053ae364
 
 ## Usage
 
