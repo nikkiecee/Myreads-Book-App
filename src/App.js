@@ -1,18 +1,18 @@
 import React from "react";
+import { Route } from "react-router-dom";
 import * as BooksAPI from "./BooksAPI";
 import Header from "./components/Header";
 import Shelves from "./components/Shelves";
 import SearchButton from "./components/SearchButton";
 import SearchPage from "./components/SearchPage";
 import "./App.css";
-import { Route } from "react-router-dom";
 
 class BooksApp extends React.Component {
   state = {
     value: "",
     books: [],
     query: "",
-    filteredBooks:[],
+    filteredBooks: [],
   };
 
   componentDidMount() {
@@ -24,32 +24,30 @@ class BooksApp extends React.Component {
   }
 
   moveBooks = (book, shelf) => {
-    BooksAPI.update(book, shelf).then(() => {});
-    BooksAPI.getAll().then((books) => {
-      this.setState(() => ({
-        books,
-      }));
+    BooksAPI.update(book, shelf).then(() => {
+      BooksAPI.getAll().then((books) => {
+        this.setState({ books });
+      });
     });
   };
 
-handleSearch = (searchtext) => {
-    BooksAPI.search(searchtext).then((books) =>{
-      /*
-      	- using the books currently in state:
-        
-      */
-      
-      this.setState(() => ({
-        filteredBooks: books,
-      }))
-    }
-    ).catch(err => console.log(err))
-  }
-  
+  handleSearch = (searchtext) => {
+    this.setState({ filteredBooks: [] });
 
-  
+    if (searchtext.length > 0) {
+      BooksAPI.search(searchtext)
+        .then((books) => {
+          if (books.error) {
+            this.setState({ filteredBooks: [] });
+          } else {
+            this.setState({ filteredBooks: books });
+          }
+        })
+        .catch((err) => this.setState({ filteredBooks: [] }));
+    }
+  };
+
   render() {
-    console.log(this.state.books)
     return (
       <div className="app">
         <Route
@@ -59,7 +57,6 @@ handleSearch = (searchtext) => {
             <SearchPage
               books={this.state.books}
               filteredBooks={this.state.filteredBooks}
-             // value={this.state.query}
               moveBooks={this.moveBooks}
               handleSearch={this.handleSearch}
             />
@@ -85,5 +82,4 @@ handleSearch = (searchtext) => {
     );
   }
 }
-
 export default BooksApp;
