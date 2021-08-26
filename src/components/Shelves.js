@@ -1,12 +1,10 @@
 import React, { Component } from "react";
 
 class Shelves extends Component {
-  
-    returnBooks = (items, shelf) => {
-        if (!items){
+  returnBooks = (items, shelf) => {
+    if (!items) {
       return <p>No books found</p>;
-        }
-else{
+    } else {
       const books = items.filter((i) => i.shelf === shelf);
       return (
         books &&
@@ -22,11 +20,13 @@ else{
                         width: 128,
                         height: 193,
                         backgroundImage: `url(${
-                          book.imageLinks.smallThumbnail
+                          book.imageLinks && book.imageLinks.thumbnail
+                            ? `${book.imageLinks.thumbnail}`
+                            : `http://via.placeholder.com/128x193?text=No%20Cover`
                         })`,
                       }}
                     />
-                    
+
                     <div className="book-shelf-changer">
                       <select
                         value={book.shelf}
@@ -47,18 +47,17 @@ else{
                     </div>
                   </div>
                   <div className="book-title">{book.title}</div>
-                  <div className="book-authors">{book.authors}</div>
+                  <div className="book-authors">{Array.isArray(book.authors)?book.authors.join(', '):''}</div>
                 </div>
               </li>
             </ol>
           </div>
         ))
       );
-}
-    };
+    }
+  };
 
   render() {
-   
     return (
       <div className="list-books-content">
         <div>
@@ -66,7 +65,9 @@ else{
             <h2 className="bookshelf-title">Currently Reading</h2>
             <div className="bookshelf-books">
               <ol className="books-grid">
-                <li>{this.returnBooks(this.props.books, "currentlyReading")}</li>
+                <li>
+                  {this.returnBooks(this.props.books, "currentlyReading")}
+                </li>
               </ol>
             </div>
           </div>
