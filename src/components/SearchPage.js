@@ -1,96 +1,100 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
+import { v4 } from "uuid";
 
 class SearchPage extends Component {
   generateBooks = (books, filteredBooks) => {
-    if (!books | !filteredBooks) {
-      return <li>No books found</li>;
-    }
-    console.log(books);
     const results = [];
+    console.log(filteredBooks);
+    if (!books || !filteredBooks) {
+      return <li>No books found</li>;
+    } else {
+      //console.log(books);
 
       filteredBooks &&
-      filteredBooks.forEach((b) => {
-        const bookExist = books.find((book) => book.title === b.title);
-        if (bookExist) {
-          results.push(
-            <li key={bookExist.id}>
-              <div className="book">
-                <div className="book-top">
-                  <div
-                    className="book-cover"
-                    style={{
-                      width: 128,
-                      height: 193,
-                      backgroundImage: bookExist.imageLinks
-                        ? `url(${bookExist.imageLinks.smallThumbnail})`
-                        : "",
-                    }}
-                  />
-                  <div className="book-shelf-changer">
-                    <select
-                      value={bookExist.shelf ? bookExist.shelf : "none"}
-                      onChange={(event) =>
-                        this.props.moveBooks(bookExist, event.target.value)
-                      }
-                    >
-                      <option value="move" disabled>
-                        Move to...
-                      </option>
-                      <option value="currentlyReading">
-                        Currently Reading
-                      </option>
-                      <option value="wantToRead">Want to Read</option>
-                      <option value="read">Read</option>
-                      <option value="none">None</option>
-                    </select>
+        filteredBooks.forEach((b) => {
+          const bookExist = books.find((book) => book.title === b.title);
+          if (bookExist) {
+            results.push(
+              <li key={v4()}>
+                <div className="book">
+                  <div className="book-top">
+                    <div
+                      className="book-cover"
+                      style={{
+                        width: 128,
+                        height: 193,
+                        backgroundImage: bookExist.imageLinks
+                          ? `url(${bookExist.imageLinks.smallThumbnail})`
+                          : "",
+                      }}
+                    />
+                    <div className="book-shelf-changer">
+                      <select
+                        value={bookExist.shelf ? bookExist.shelf : "none"}
+                        onChange={(event) =>
+                          this.props.moveBooks(bookExist, event.target.value)
+                        }
+                      >
+                        <option value="move" disabled>
+                          Move to...
+                        </option>
+                        <option value="currentlyReading">
+                          Currently Reading
+                        </option>
+                        <option value="wantToRead">Want to Read</option>
+                        <option value="read">Read</option>
+                        <option value="none">None</option>
+                      </select>
+                    </div>
                   </div>
+                  <div className="book-title">{bookExist.title}</div>
+                  <div className="book-authors">{bookExist.authors}</div>
                 </div>
-                <div className="book-title">{bookExist.title}</div>
-                <div className="book-authors">{bookExist.authors}</div>
-              </div>
-            </li>
-          );
-        }
-        else{
-         results.push(
-          <li key={b.id}>
-            <div className="book">
-              <div className="book-top">
-                <div
-                  className="book-cover"
-                  style={{
-                    width: 128,
-                    height: 193,
-                    backgroundImage: b.imageLinks
-                      ? `url(${b.imageLinks.smallThumbnail})`
-                      : "",
-                  }}
-                />
-                <div className="book-shelf-changer">
-                  <select
-                    value={b.shelf ? b.shelf : "none"}
-                    onChange={(event) =>
-                      this.props.moveBooks(b, event.target.value)
-                    }
-                  >
-                    <option value="move" disabled>
-                      Move to...
-                    </option>
-                    <option value="currentlyReading">Currently Reading</option>
-                    <option value="wantToRead">Want to Read</option>
-                    <option value="read">Read</option>
-                    <option value="none">None</option>
-                  </select>
+              </li>
+            );
+          } else {
+            results.push(
+              <li key={v4()}>
+                <div className="book">
+                  <div className="book-top">
+                    <div
+                      className="book-cover"
+                      style={{
+                        width: 128,
+                        height: 193,
+                        backgroundImage: b.imageLinks
+                          ? `url(${b.imageLinks.smallThumbnail})`
+                          : "",
+                      }}
+                    />
+                    <div className="book-shelf-changer">
+                      <select
+                        value={b.shelf ? b.shelf : "none"}
+                        onChange={(event) =>
+                          this.props.moveBooks(b, event.target.value)
+                        }
+                      >
+                        <option value="move" disabled>
+                          Move to...
+                        </option>
+                        <option value="currentlyReading">
+                          Currently Reading
+                        </option>
+                        <option value="wantToRead">Want to Read</option>
+                        <option value="read">Read</option>
+                        <option value="none">None</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div className="book-title">{b.title}</div>
+                  <div className="book-authors">{b.authors}</div>
                 </div>
-              </div>
-              <div className="book-title">{b.title}</div>
-              <div className="book-authors">{b.authors}</div>
-            </div>
-          </li>
-          )
-        } 
-      })
+              </li>
+            );
+          }
+        });
+    }
     return results;
   };
 
@@ -120,3 +124,4 @@ class SearchPage extends Component {
   }
 }
 export default SearchPage;
+
